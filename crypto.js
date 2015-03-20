@@ -1,3 +1,5 @@
+//TODO: find frequent combos and double letter combos, also make guesses based on frequency, analyze letter placement, make guess based on placement, implement other type of ciphers
+
 var realAplhabet = [
   'a', 'b', 'c', 'd', 'e',
   'f', 'g', 'h', 'i', 'j',
@@ -5,6 +7,15 @@ var realAplhabet = [
   'o', 'p', 'q', 'r', 's',
   't', 'u', 'v', 'w', 'x',
   'y', 'z'
+];
+
+var frequencyAlphabet = [
+  'e', 't', 'a', 'o', 'i',
+  'n', 's', 'h', 'r', 'd',
+  'l', 'c', 'u', 'm', 'w',
+  'f', 'g', 'y', 'p', 'b',
+  'v', 'k', 'j', 'x', 'q',
+  'z'
 ];
 
 function rotate(input, amount) {
