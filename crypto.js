@@ -37,6 +37,8 @@ function rotate(input, amount) {
   i = 0;
   ii = input.length;
 
+  input = input.toLowerCase();
+
   for (; i < ii; i++) {
     output += (key[input[i]]) ? key[input[i]] : input[i];
   }
@@ -59,9 +61,15 @@ function hexDecode(input) {
 
 function analyzeFrequency(input) {
   var i = 0,
-      ii = input.length,
+      ii,
       output = {},
       letter;
+
+  input = input.replace(/[\.,-\/#!$%\^&\?*;:{}=\-_`~()]/g, '');
+  input = input.replace(/\s/g, '');
+  input = input.toUpperCase();
+
+  ii = input.length;
 
   for (; i < ii; i++) {
     if (output[input[i]]) {
