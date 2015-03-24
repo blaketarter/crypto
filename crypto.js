@@ -99,6 +99,68 @@ function analyzeFrequency(input) {
   return output;
 }
 
+function sortFrequency(input) {
+  var i = 0,
+      keys = Object.keys(input),
+      ii = keys.length,
+      sorted = [],
+      letter;
+
+  for (; i < ii; i++) {
+    sorted.push([keys[i], input[keys[i]].percentage]);
+  }
+
+  sorted.sort(function(a, b) {
+    return b[1] - a[1];
+  });
+
+  return sorted;
+}
+
+function guessFrequencyLetter(input) {
+  var i = 0,
+      ii = frequencyAlphabet.length,
+      guess = {};
+
+      // input = input.replace(/[\.,-\/#!$%\^&\?*;:{}=\-_`~()]/g, '');
+      // input = input.replace(/\s/g, '');
+      // input = input.toLowerCase();
+
+  for (; i < ii; i++) {
+    if (input[i]) {
+      guess[input[i][0].toLowerCase()] = frequencyAlphabet[i];
+    } else {
+      guess[frequencyAlphabet[i]] = frequencyAlphabet[i];
+    }
+  }
+
+  return guess;
+}
+
+function guessFrequencyText(input, guessFrequencyLetter, hint) {
+  var i = 0,
+      ii = input.length,
+      output = '';
+
+  input = input.toLowerCase();
+
+  for (; i < ii; i++) {
+    if (hint && hint[input[i]]) {
+      output += hint[input[i]];
+    } else if (guessFrequencyLetter[input[i]] && !hint) {
+      output += guessFrequencyLetter[input[i]];
+    } else {
+      output += input[i].toUpperCase();
+    }
+  }
+
+  return output;
+}
+
+function applyHint(input, guessFrequencyLetter, hint) {
+  return guessFrequencyText(input, guessFrequencyLetter, hint);
+}
+
 function rotateAll(input) {
   var i = 1,
       ii = 25,
@@ -111,13 +173,16 @@ function rotateAll(input) {
   return output;
 }
 
-function decypher(input) {
+function decypher(input, hint) {
   var output = {};
 
   output.rotate = rotateAll(input);
   // output.base64 = atob(input);
   output.hexdecode = hexDecode(input);
-  output.frequency = analyzeFrequency(input);
+  output.frequency = sortFrequency(analyzeFrequency(input));
+  output.guessFrequencyLetter = guessFrequencyLetter(output.frequency);
+  output.guessFrequencyText = guessFrequencyText(input, output.guessFrequencyLetter);
+  output.withHint = applyHint(input, output.guessFrequencyLetter, hint);
 
   return output;
 }
